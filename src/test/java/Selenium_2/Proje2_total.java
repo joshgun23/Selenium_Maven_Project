@@ -23,7 +23,7 @@ public class Proje2_total {
         WebDriver driver = new ChromeDriver();
         driver.get("http://secure.smartbearsoftware.com/samples/TestComplete12/WebOrders/Login.aspx");
         driver.manage().window().maximize();
-//s3
+///s3
          WebElement userName =  driver.findElement(By.xpath("//input[@name = 'ctl00$MainContent$username']"));
 userName.sendKeys("Tester");
 
@@ -130,10 +130,10 @@ product.click();
         Assert.assertEquals(zip, randomDataRow[4]);
 
         // s-18 Log out of the application
-        driver.findElement(By.id("ctl00_logout")).click();
+        //driver.findElement(By.id("ctl00_logout")).click();
 
         // Quit the driver
-        driver.quit();
+       // driver.quit();
 
     }
 }
