@@ -11,6 +11,10 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -98,10 +102,13 @@ product.click();
                 cardNumber = "3" + new Faker().number().digits(14);
                 break;
         }
+
         driver.findElement(By.id("ctl00_MainContent_fmwOrder_TextBox6")).sendKeys(cardNumber);
 
         // s-13 Enter a valid expiration date (newer than the current date)
-        driver.findElement(By.id("ctl00_MainContent_fmwOrder_TextBox1")).sendKeys("12/23");
+        int randomDate =1+(int)(Math.random()* 11);
+        String expDate=""+randomDate;
+        driver.findElement(By.id("ctl00_MainContent_fmwOrder_TextBox1")).sendKeys(expDate.length()==2? expDate+"/"+new Faker().number().numberBetween(23,40): 0+expDate+"/"+new Faker().number().numberBetween(23,40));
 
         // s-14 Click on the Process button
         driver.findElement(By.id("ctl00_MainContent_fmwOrder_InsertButton")).click();
@@ -128,12 +135,21 @@ product.click();
         Assert.assertEquals(city, randomDataRow[2]);
         Assert.assertEquals(state, randomDataRow[3]);
         Assert.assertEquals(zip, randomDataRow[4]);
+        Assert.assertEquals(cardNumber,driver.findElement(By.xpath("//*[@id=\"ctl00_MainContent_orderGrid\"]/tbody/tr[2]/td[11]")).getText());
+
+        System.out.println("Actualy :" + driver.findElement(By.xpath("//*[@id=\"ctl00_MainContent_orderGrid\"]/tbody/tr[2]")).getText());
+        Thread.sleep(5000);
+        System.out.println("Excepted :" + Arrays.deepToString(randomDataRow));
+
+        //Time
+        LocalDateTime currentTime = LocalDateTime.now();
+        System.out.println(currentTime+" ");
 
         // s-18 Log out of the application
-        //driver.findElement(By.id("ctl00_logout")).click();
+           driver.findElement(By.id("ctl00_logout")).click();
 
         // Quit the driver
-       // driver.quit();
+          driver.quit();
 
     }
 }
